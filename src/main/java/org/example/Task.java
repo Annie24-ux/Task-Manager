@@ -5,7 +5,7 @@ public class Task {
     private int taskId;
     private boolean isComplete;
 
-    public Task(String description, int taskId, boolean isComplete){
+    public Task(int taskId, String description, boolean isComplete){
         this.description = description;
         this.taskId = taskId;
         this.isComplete = isComplete;
@@ -21,5 +21,17 @@ public class Task {
 
     public boolean isComplete() {
         return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }
