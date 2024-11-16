@@ -5,26 +5,46 @@ import java.sql.*;
 public class DbConnect {
     public static String DB_url = "jdbc:sqlite:tasks.db";
 
+    public static void main(String[] args) throws SQLException {
+        Connection con = null;
 
-    public static void main(String[] args) {
+        try{
+            con = DriverManager.getConnection(DB_url);
+            System.out.println("Connection open");
 
-
-        String selectQuery = "SELECT * FROM tasks;";
-        try(Connection conn = DriverManager.getConnection(DB_url);
-            createTable(Connection conn);
-            Statement stmt = conn.createStatement();
-//            stmt.execute(createQuery);
-            ResultSet res = stmt.executeQuery(selectQuery);) {
-            stmt.executeQuery(selectQuery);
-            // Extract data from result set
-            while (res.next()) {
-                // Retrieve by column name
-                System.out.print("ID: ");
+            try{
+                System.out.println("deletes table");
+            }catch (Exception ignored){
+                System.out.println("do nothing");
             }
-        } catch (SQLException e)
-        {
-            System.out.println("Error connecting: "+e);
+            createTable(con);
+            System.out.println("Table created....");
+            System.out.println("Inserting data now");
+            insertTask(con, 1, "Cook lunch", true);
+            insertTask(con, 2, "Clean", true);
+            insertTask(con, 3, "Laundry", true);
+            System.out.println("Viewing table");
+            selectFromTable(con);
+
+        }catch (SQLException e){
+            System.out.println(e);
+        }
     }
+
+
+
+    public static void selectFromTable(Connection conn) throws SQLException {
+        String selectQuery = "SELECT * FROM tasks;";
+        Statement stmt = conn.createStatement();
+        stmt.execute(selectQuery);
+        ResultSet res = stmt.executeQuery(selectQuery) ;
+        stmt.executeQuery(selectQuery);
+
+        while(res.next()){
+            System.out.println("Res: ");
+        }
+
+
     }
 
     public static void createTable(Connection con) throws SQLException {
@@ -37,7 +57,7 @@ public class DbConnect {
         stmt.execute(createQuery);
     }
 
-    public static void insertTask(Connection conn, String description, int taskId, boolean status) throws SQLException {
+    public static void insertTask(Connection conn, int taskId, String description, boolean status) throws SQLException {
        final String insertString = " INSERT into tasks(description, id, status) VALUES(?,?,?)";
        PreparedStatement pstm = conn.prepareStatement(insertString);
        pstm.setInt(1,taskId);
