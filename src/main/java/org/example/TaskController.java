@@ -6,38 +6,53 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskController {
     private String task;
+    private List<Task> tasks = new ArrayList<>();
+
+    static DbConnect db = new DbConnect();
 
     public static void getAllTasks(Context context) {
         List<Task> tasks = new ArrayList<>();
-        try (Connection connection = DbConnect.getConnection();
+        Map<Integer,String> noTasks= new HashMap<>();
+
+
+        if (tasks.isEmpty()){
+            noTasks.put(0, "No tasks, add new task");
+        }
+        try (Connection connection = db.getConnection();
              PreparedStatement ptsm = connection.prepareStatement("SELECT * FROM tasks")) {
+            System.out.println("Checks con");
+            db.checkConnection(connection);
+            System.out.println("done ...");
             ResultSet res = ptsm.executeQuery();
             while (res.next()) {
                 tasks.add(new Task(
                         res.getInt("id"),
                         res.getString("description"),
-                        res.getBoolean("completed")
+                        res.getBoolean("isComplete")
                 ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        context.json(tasks);
-    }
+        context.json(tasks.isEmpty() ? noTasks : tasks);
 
+    }
 
     public Task getTaskById(int id) {
-        return new Task(2,"",true);
+        return tasks.get(id);
     }
+
 
     public static void addTask(Context context) {
         Task task = context.bodyAsClass(Task.class);
 
-        final String insertString = " INSERT into tasks(description, id, complete) VALUES(?,?,?)";
+        final String insertString = " INSERT into tasks(id, description, isComplete) VALUES(?,?,?)";
         try (Connection connection = DbConnect.getConnection();
              PreparedStatement ptsm = connection.prepareStatement(insertString)) {
             ptsm.setInt(1, task.getTaskId());
@@ -74,4 +89,6 @@ public class TaskController {
     }
 
 
+    public static void getASingleTask(Context context) {
+    }
 }
