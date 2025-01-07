@@ -54,7 +54,9 @@ public class TaskController {
         } catch(Exception e){
             e.printStackTrace();
             context.status(500).result("Failed to convert json object into Task object");
-        }}
+        }
+
+    }
 
     public static void removeTask(Context context) {
         Task task = context.bodyAsClass(Task.class);

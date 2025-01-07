@@ -1,5 +1,8 @@
 package org.example;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Task {
@@ -13,9 +16,19 @@ public class Task {
         this.isComplete = isComplete;
     }
 
+//    @JsonCreator
+//    public Task(@JsonProperty("description") String description,
+//                @JsonProperty("isComplete") boolean isComplete) {
+//        this.description = description;
+//        this.isComplete = isComplete;
+//    }
+
     public Task(String description) {
         this.description = description;
         this.isComplete = false;
+    }
+
+    public Task(){
     }
 
 
