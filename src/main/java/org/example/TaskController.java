@@ -14,11 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TaskController {
-//    private String task;
-//    private List<Task> tasks = new ArrayList<>();
-
     static DbConnect db = new DbConnect();
-
     TaskController(){
     }
 
@@ -50,7 +46,6 @@ public class TaskController {
         }
     }
 
-
     public static void addTask(Context context) {
         try{
         String jsonBodyString = context.body();
@@ -67,26 +62,36 @@ public class TaskController {
     }
 
     public static void removeTask(Context context) {
-        Task task = context.bodyAsClass(Task.class);
-        int id = Integer.parseInt(context.pathParam("id"));
+        Task task = null;
 
-        final String deleteQuery = " DELETE FROM tasks WHERE id = ?";
-        try (Connection connection = DbConnect.getConnection();
-             PreparedStatement ptsm = connection.prepareStatement(deleteQuery)) {
-            ptsm.setInt(1,id);
-            int rows = ptsm.executeUpdate();
+        try {
+            int taskId = Integer.parseInt(context.pathParam("id"));
+//            task = db.deleteTaskById(taskId);
+        } catch (Exception e) {
 
-            if(rows > 0){
-                context.status(200).result("Task deleted successfully.");
-            }else{
-                context.status(404).result("Task not found");
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            context.status(500).result("Error deleting task");
+        } catch (NumberFormatException er) {
+            er.printStackTrace();
         }
+
     }
+
+//        final String deleteQuery = " DELETE FROM tasks WHERE id = ?";
+//        try (Connection connection = DbConnect.getConnection();
+//             PreparedStatement ptsm = connection.prepareStatement(deleteQuery)) {
+//            ptsm.setInt(1,id);
+//            int rows = ptsm.executeUpdate();
+//
+//            if(rows > 0){
+//                context.status(200).result("Task deleted successfully.");
+//            }else{
+//                context.status(404).result("Task not found");
+//
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            context.status(500).result("Error deleting task");
+//        }
+//    }
 
     public static void updateTask(Context context){
 

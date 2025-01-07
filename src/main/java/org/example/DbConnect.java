@@ -124,7 +124,7 @@ public class DbConnect {
              PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
             stmt.setInt(1, id);
             int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0; // Return true if task was deleted
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
