@@ -28,10 +28,6 @@ public class Task {
         this.isComplete = false;
     }
 
-    public Task(){
-    }
-
-
     public int getTaskId() {
         return taskId;
     }

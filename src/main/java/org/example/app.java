@@ -20,11 +20,12 @@ public class app {
         DbConnect.createTable();
 
         server.get("/tasks", TaskController::getAllTasks);
+        server.get("/tasks/{id}", TaskController::getTaskById);
         server.post("/tasks", TaskController::addTask);
-//        server.post("/tasks/{description}/{isComplete}", TaskController::addTask);
-        server.put("/task/{taskId}/{description}/{isComplete}", TaskController::addTask);
-        server.get("/task/{id}", TaskController::getASingleTask);
-        server.put("/task/{taskId}", TaskController::removeTask);
+//        server.put("/task/{taskId}", TaskController::updateTask);
+//        server.put("/task/{taskId}", TaskController::removeTask);
+//        server.put("/task/{taskId}", TaskController::updateTask);
+
 
 
         return server;

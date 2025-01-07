@@ -100,14 +100,13 @@ public class DbConnect {
     }
 
     public static Task selectTaskById(int id) {
-        Task task = null;
         final String query = "SELECT * FROM tasks WHERE id = ?";
         try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             ResultSet res = stmt.executeQuery();
             if (res.next()) {
-                task = new Task(
+                return new Task(
                         res.getInt("id"),
                         res.getString("description"),
                         res.getBoolean("isComplete")
@@ -116,7 +115,7 @@ public class DbConnect {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return task;
+        return null;
     }
 
     public static boolean deleteTaskById(int id) {

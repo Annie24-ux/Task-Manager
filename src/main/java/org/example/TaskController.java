@@ -2,6 +2,8 @@ package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TaskController {
-    private String task;
-    private List<Task> tasks = new ArrayList<>();
+//    private String task;
+//    private List<Task> tasks = new ArrayList<>();
 
     static DbConnect db = new DbConnect();
 
@@ -23,16 +25,29 @@ public class TaskController {
     public static void getAllTasks(Context context) {
         List<Task> tasks = db.selectAllTasks();
         if (tasks.isEmpty()) {
-            context.status(200);
+            context.status(HttpStatus.OK);
             context.json("No tasks available, add new tasks!.");
         } else {
+            context.status(HttpStatus.OK);
             context.json(tasks);
         }
-
     }
 
-    public Task getTaskById(int id) {
-        return tasks.get(id);
+    public static void getTaskById(Context context) {
+        Task task = null;
+        try{
+            int taskId = Integer.parseInt(context.pathParam("id"));
+            task = db.selectTaskById(taskId);
+            context.status(HttpStatus.OK);
+            System.out.println("This is the task: "+task);
+            context.json(task);
+        } catch (NumberFormatException err){
+            err.printStackTrace();
+            System.out.println("Id is not of the int class.");
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            context.status(HttpStatus.NOT_FOUND);
+        }
     }
 
 
@@ -40,20 +55,13 @@ public class TaskController {
         try{
         String jsonBodyString = context.body();
 
-        if(jsonBodyString instanceof String){
-                System.out.println("Type string....");
-                System.out.println(jsonBodyString);
-            }
-
         ObjectMapper obj = new ObjectMapper();
         Task task = obj.readValue(jsonBodyString,Task.class);
-            System.out.println("TASK: "+ task.getDescription());
-            System.out.println("Status: "+ task.isComplete());
         DbConnect.insertTask(task.getDescription(), task.isComplete());
-        context.status(201).json("Task added successfully");
+        context.status(HttpStatus.CREATED).json("Task added successfully");
         } catch(Exception e){
             e.printStackTrace();
-            context.status(500).result("Failed to convert json object into Task object");
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to convert json object into Task object");
         }
 
     }
@@ -78,6 +86,10 @@ public class TaskController {
             e.printStackTrace();
             context.status(500).result("Error deleting task");
         }
+    }
+
+    public static void updateTask(Context context){
+
     }
 
 
