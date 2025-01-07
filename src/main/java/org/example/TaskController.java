@@ -1,5 +1,6 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,31 +17,17 @@ public class TaskController {
 
     static DbConnect db = new DbConnect();
 
+    TaskController(){
+    }
+
     public static void getAllTasks(Context context) {
-        List<Task> tasks = new ArrayList<>();
-        Map<Integer,String> noTasks= new HashMap<>();
-
-
-        if (tasks.isEmpty()){
-            noTasks.put(0, "No tasks, add new task");
+        List<Task> tasks = db.selectAllTasks();
+        if (tasks.isEmpty()) {
+            context.status(200);
+            context.json("No tasks available, add new tasks!.");
+        } else {
+            context.json(tasks);
         }
-        try (Connection connection = db.getConnection();
-             PreparedStatement ptsm = connection.prepareStatement("SELECT * FROM tasks")) {
-            System.out.println("Checks con");
-            db.checkConnection(connection);
-            System.out.println("done ...");
-            ResultSet res = ptsm.executeQuery();
-            while (res.next()) {
-                tasks.add(new Task(
-                        res.getInt("id"),
-                        res.getString("description"),
-                        res.getBoolean("isComplete")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        context.json(tasks.isEmpty() ? noTasks : tasks);
 
     }
 
@@ -50,21 +37,24 @@ public class TaskController {
 
 
     public static void addTask(Context context) {
-        Task task = context.bodyAsClass(Task.class);
+        try{
+        String jsonBodyString = context.body();
 
-        final String insertString = " INSERT into tasks(id, description, isComplete) VALUES(?,?,?)";
-        try (Connection connection = DbConnect.getConnection();
-             PreparedStatement ptsm = connection.prepareStatement(insertString)) {
-            ptsm.setInt(1, task.getTaskId());
-            ptsm.setString(2, task.getDescription());
-            ptsm.setBoolean(3, task.isComplete());
-            ptsm.executeUpdate();
-            context.status(201);
-        } catch (SQLException e) {
-            context.status(500);
-            throw new RuntimeException(e);
-        }
-    }
+        if(jsonBodyString instanceof String){
+                System.out.println("Type string....");
+                System.out.println(jsonBodyString);
+            }
+
+        ObjectMapper obj = new ObjectMapper();
+        Task task = obj.readValue(jsonBodyString,Task.class);
+            System.out.println("TASK: "+ task.getDescription());
+            System.out.println("Status: "+ task.isComplete());
+        DbConnect.insertTask(task.getDescription(), task.isComplete());
+        context.status(201).json("Task added successfully");
+        } catch(Exception e){
+            e.printStackTrace();
+            context.status(500).result("Failed to convert json object into Task object");
+        }}
 
     public static void removeTask(Context context) {
         Task task = context.bodyAsClass(Task.class);

@@ -11,18 +11,19 @@ public class app {
     public static void main(String[] args) {
         server = configServer();
         server.start(PORT_NUMBER);
-        System.out.println("App server started....");
+        System.out.println("App server started at port "+ PORT_NUMBER);
     }
 
 
     public static Javalin configServer(){
         server = Javalin.create();
-        server.get("/", TaskController::getAllTasks);
+        DbConnect.createTable();
+
         server.get("/tasks", TaskController::getAllTasks);
-        server.post("/task/{taskId}/{description}/{isComplete}", TaskController::addTask);
+        server.post("/tasks", TaskController::addTask);
+//        server.post("/tasks/{description}/{isComplete}", TaskController::addTask);
         server.put("/task/{taskId}/{description}/{isComplete}", TaskController::addTask);
         server.get("/task/{id}", TaskController::getASingleTask);
-
         server.put("/task/{taskId}", TaskController::removeTask);
 
 
