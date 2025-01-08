@@ -62,36 +62,26 @@ public class TaskController {
     }
 
     public static void removeTask(Context context) {
-        Task task = null;
 
         try {
             int taskId = Integer.parseInt(context.pathParam("id"));
-//            task = db.deleteTaskById(taskId);
-        } catch (Exception e) {
-
+            boolean isDeleted = db.deleteTaskById(taskId);
+            if(isDeleted){
+                context.status(HttpStatus.NO_CONTENT).result("Task has been successfully deleted.");
+            }else{
+                context.status(HttpStatus.NOT_FOUND).result("Failed to delete task.");
+            }
         } catch (NumberFormatException er) {
             er.printStackTrace();
-        }
+            context.status(HttpStatus.INTERNAL_SERVER_ERROR).result(
+                    "Error while deleting a task.");
+        } catch (Exception e) {
+        e.printStackTrace();
+        context.status(HttpStatus.NOT_FOUND).result("Task does not exist.");
 
-    }
+    }}
 
-//        final String deleteQuery = " DELETE FROM tasks WHERE id = ?";
-//        try (Connection connection = DbConnect.getConnection();
-//             PreparedStatement ptsm = connection.prepareStatement(deleteQuery)) {
-//            ptsm.setInt(1,id);
-//            int rows = ptsm.executeUpdate();
-//
-//            if(rows > 0){
-//                context.status(200).result("Task deleted successfully.");
-//            }else{
-//                context.status(404).result("Task not found");
-//
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            context.status(500).result("Error deleting task");
-//        }
-//    }
+
 
     public static void updateTask(Context context){
 

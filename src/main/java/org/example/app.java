@@ -15,6 +15,10 @@ public class app {
     }
 
 
+    /**
+     * Configures the server for the program/app.
+     * @return
+     */
     public static Javalin configServer(){
         server = Javalin.create();
         DbConnect.createTable();
@@ -22,11 +26,9 @@ public class app {
         server.get("/tasks", TaskController::getAllTasks);
         server.get("/tasks/{id}", TaskController::getTaskById);
         server.post("/tasks", TaskController::addTask);
+        server.put("/task/{taskId}", TaskController::updateTask);
+        server.delete("/tasks/{taskId}", TaskController::removeTask);
 //        server.put("/task/{taskId}", TaskController::updateTask);
-//        server.put("/task/{taskId}", TaskController::removeTask);
-//        server.put("/task/{taskId}", TaskController::updateTask);
-
-
 
         return server;
         }
