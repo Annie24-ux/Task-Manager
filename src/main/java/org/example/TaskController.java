@@ -35,11 +35,9 @@ public class TaskController {
             int taskId = Integer.parseInt(context.pathParam("id"));
             task = db.selectTaskById(taskId);
             context.status(HttpStatus.OK);
-            System.out.println("This is the task: "+task);
             context.json(task);
         } catch (NumberFormatException err){
             err.printStackTrace();
-            System.out.println("Id is not of the int class.");
             context.status(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e){
             context.status(HttpStatus.NOT_FOUND);
@@ -64,7 +62,9 @@ public class TaskController {
     public static void removeTask(Context context) {
 
         try {
-            int taskId = Integer.parseInt(context.pathParam("id"));
+//            int taskId = Integer.parseInt(context.pathParam("taskId"));
+
+            int taskId = Integer.parseInt(context.pathParam("taskId"));
             boolean isDeleted = db.deleteTaskById(taskId);
             if(isDeleted){
                 context.status(HttpStatus.NO_CONTENT).result("Task has been successfully deleted.");
