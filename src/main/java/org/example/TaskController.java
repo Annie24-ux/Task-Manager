@@ -68,6 +68,7 @@ public class TaskController {
             boolean isDeleted = db.deleteTaskById(taskId);
             if(isDeleted){
                 context.status(HttpStatus.NO_CONTENT).result("Task has been successfully deleted.");
+                System.out.println("Task has been deleted successfully!.");
             }else{
                 context.status(HttpStatus.NOT_FOUND).result("Failed to delete task.");
             }
