@@ -102,6 +102,5 @@ public class TaskController {
     }
 
 
-    public static void getASingleTask(Context context) {
-    }
+
 }
