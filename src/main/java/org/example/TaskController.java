@@ -89,6 +89,10 @@ public class TaskController {
         try{
             int id = Integer.parseInt(context.pathParam("taskId"));
             db.updateTask(id);
+
+            //Fetch updated task;
+
+            getTaskById(id);
         } catch(NumberFormatException err){
             err.printStackTrace();
             context.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to convert into a number/Interger.");
