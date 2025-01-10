@@ -29,17 +29,10 @@ public class DbConnect {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
         try(Connection con = DbConnect.getConnection()) {
             if (con != null) {
                 System.out.println("Connection open");
-//                createTable(con);
-                System.out.println("Table created....");
-                System.out.println("Inserting data now");
-
-                System.out.println("Viewing table");
-    //            selectFromTable(con);
-                System.out.println("Done selecting...");
             } else{
                 System.out.println("Could not establish connection.");
             }
