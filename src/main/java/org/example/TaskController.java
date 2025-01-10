@@ -84,7 +84,10 @@ public class TaskController {
 
 
 
-    public static void updateTask(Context context){
+    public static void editTask(Context context){
+        int id = Integer.parseInt(context.pathParam("taskId"));
+
+        db.updateTask(id);
 
     }
 

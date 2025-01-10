@@ -7,7 +7,7 @@ import java.util.List;
 public class DbConnect {
     public static String DB_url = "jdbc:sqlite:tasksDB.db";
 
-    public DbConnect(){
+    public DbConnect() {
     }
 
     public static Connection getConnection() {
@@ -20,8 +20,7 @@ public class DbConnect {
     }
 
 
-
-    public static void checkConnection(Connection con){
+    public static void checkConnection(Connection con) {
         if (con != null) {
             System.out.println("Connection successful!");
         } else {
@@ -29,17 +28,17 @@ public class DbConnect {
         }
     }
 
-    public static void main(String[] args){
-        try(Connection con = DbConnect.getConnection()) {
+    public static void main(String[] args) {
+        try (Connection con = DbConnect.getConnection()) {
             if (con != null) {
                 System.out.println("Connection open");
-            } else{
+            } else {
                 System.out.println("Could not establish connection.");
             }
-        } catch (SQLException e){
-        System.out.println(e);
-    }}
-
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
 
     public static void createTable() {
@@ -124,9 +123,17 @@ public class DbConnect {
         return false;
     }
 
-    public static void updateTask(int id){
+    public static void updateTask(int id) {
         final String updateQuery = "UPDATE FROM tasks WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+            stmt.setInt(1, id);
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
     }
+
 
 }

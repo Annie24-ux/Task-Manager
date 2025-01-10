@@ -26,7 +26,7 @@ public class app {
         server.get("/tasks", TaskController::getAllTasks);
         server.get("/tasks/{id}", TaskController::getTaskById);
         server.post("/tasks", TaskController::addTask);
-        server.patch("/task/{taskId}", TaskController::updateTask);
+        server.patch("/task/{taskId}", TaskController::editTask);
         server.delete("/tasks/{taskId}", TaskController::removeTask);
 //        server.put("/task/{taskId}", TaskController::updateTask);
 
