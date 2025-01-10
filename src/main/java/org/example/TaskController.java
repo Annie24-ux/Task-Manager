@@ -92,7 +92,7 @@ public class TaskController {
 
             //Fetch updated task;
 
-            getTaskById(id);
+//            getTaskById(id);
         } catch(NumberFormatException err){
             err.printStackTrace();
             context.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to convert into a number/Interger.");

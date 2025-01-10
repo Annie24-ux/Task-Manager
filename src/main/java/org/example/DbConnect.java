@@ -124,7 +124,15 @@ public class DbConnect {
     }
 
     public static void updateTask(int id) {
+        Task oldTask = null;
+        oldTask = selectTaskById(id);
+        String description = oldTask.getDescription();
+        String status = String.valueOf(oldTask.isComplete());
         final String updateQuery = "UPDATE FROM tasks WHERE id = ?";
+
+
+
+
         try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
             stmt.setInt(1, id);
