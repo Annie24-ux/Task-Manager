@@ -125,6 +125,7 @@ public class DbConnect {
     }
 
     public static void updateTask(int id){
+        final String updateQuery = "UPDATE FROM tasks WHERE id = ?";
 
     }
 
