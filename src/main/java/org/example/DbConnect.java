@@ -130,6 +130,13 @@ public class DbConnect {
         String status = String.valueOf(oldTask.isComplete());
         final String updateQuery = "UPDATE FROM tasks WHERE id = ?";
 
+        /**
+         * -- Update the task
+         * UPDATE tasks
+         * SET description = 'Updated description', isComplete = 1
+         * WHERE id = 1;
+         */
+
 
 
 
