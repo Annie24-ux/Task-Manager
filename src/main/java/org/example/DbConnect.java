@@ -123,6 +123,12 @@ public class DbConnect {
         return false;
     }
 
+
+    /**
+     * Updates the contents of a json body.
+     * @param id
+     */
+
     public static void updateTask(int id) {
         Task oldTask = null;
         oldTask = selectTaskById(id);
