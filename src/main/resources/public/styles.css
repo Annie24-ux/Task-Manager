@@ -1,11 +1,12 @@
-background-color: purple;
+/* background-color: purple; */
 h1{
-font-size - 20px;
+font-size : 20px;
+color: violet;
 }
 
 body{
-background-color: red;
-width: 10px;
+background-color: rgb(94, 78, 78);
+/* width: 10px; */
 font-family: Sans;
 
 }
@@ -18,7 +19,7 @@ font-weight: 10px;
 
 
 form{
-border-radius: red;
+border-radius: rgb(80, 10, 10);
 
 }
 
@@ -28,3 +29,12 @@ background-color: brown;
 padding: 10px 12px;
 }
 
+#heading{
+    text-align: center;
+}
+
+#newTask, #deleteTask{
+    padding: 10px 15px;
+    border-radius: 5px;
+    border-color: green;
+}
