@@ -1,11 +1,11 @@
 /* background-color: purple; */
 h1{
 font-size : 20px;
-color: violet;
+color: #27667B;
 }
 
 body{
-background-color: rgb(94, 78, 78);
+background-color: beige;
 /* width: 10px; */
 font-family: Sans;
 
@@ -37,4 +37,10 @@ padding: 10px 12px;
     padding: 10px 15px;
     border-radius: 5px;
     border-color: green;
+}
+
+footer{
+    text-align: center;
+    text-decoration: wavy;
+    color: #4B164C;
 }
